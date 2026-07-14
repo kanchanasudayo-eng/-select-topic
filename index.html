@@ -3,29 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bill Splitter</title>
+    <title>โปรแกรมคำนวณหารบิลค่าข้าว</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="calculator-card">
+        <header class="card-header">
+            <span class="header-icon" aria-hidden="true">🍽️</span>
+            <h1>คำนวณหารบิลค่าข้าว</h1>
+        </header>
 
-<div class="container">
-    <h1>🍽️ หารบิลค่าข้าว</h1>
+        <main class="card-body">
+            <div class="input-group">
+                <label for="totalBill">ยอดรวม (บาท)</label>
+                <input type="number" id="totalBill" placeholder="0.00" min="0" step="0.01" required>
+            </div>
 
-    <label>ยอดรวม (บาท)</label>
-    <input type="number" id="total">
+            <div class="input-group">
+                <label for="numPeople">จำนวนคน</label>
+                <input type="number" id="numPeople" placeholder="0" min="1" step="1" required>
+            </div>
 
-    <label>จำนวนคน</label>
-    <input type="number" id="people">
+            <div class="input-group">
+                <label for="serviceCharge">Service Charge (%)</label>
+                <input type="number" id="serviceCharge" placeholder="0" min="0" max="100" step="1">
+            </div>
 
-    <label>Service Charge (%)</label>
-    <input type="number" id="service">
+            <button id="calculateBtn">คำนวณ</button>
 
-    <button id="calculateBtn">คำนวณ</button>
+            <div id="resultArea" class="result-area hidden">
+                <p>ยอดรวมทั้งหมด: <strong id="totalWithService">0.00</strong> บาท</p>
+                <p>แต่ละคนจ่าย: <strong id="perPerson">0.00</strong> บาท</p>
+            </div>
+        </main>
+    </div>
 
-    <div id="result"></div>
-</div>
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,55 +1,132 @@
-body{
-    margin:0;
-    padding:0;
-    background:#f5f5f5;
-    font-family:Arial, Helvetica, sans-serif;
+/* กฏทั่วไป */
+:root {
+    --primary-color: #3182ce; /* สีน้ำเงินหลัก */
+    --hover-color: #2b6cb0;   /* สีตอนชี้ปุ่ม */
+    --bg-color: #f7fafc;      /* สีพื้นหลังหน้าเว็บ */
+    --text-color: #2d3748;   /* สีตัวอักษรทั่วไป */
+    --card-bg: #ffffff;      /* สีพื้นหลังการ์ด */
 }
 
-.container{
-    width:350px;
-    margin:50px auto;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-h1{
-    text-align:center;
-    color:#333;
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-label{
-    display:block;
-    margin-top:15px;
+/* การ์ดคำนวณหลัก */
+.calculator-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    width: 90%;
+    max-width: 450px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
-input{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    box-sizing:border-box;
+/* หัวข้อการ์ด */
+.card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    margin-top:20px;
-    background:#007bff;
-    color:white;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    font-size:16px;
+.header-icon {
+    font-size: 1.8rem;
 }
 
-button:hover{
-    background:#0056b3;
+.card-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-#result{
-    margin-top:20px;
-    font-size:18px;
-    text-align:center;
-    font-weight:bold;
+/* กลุ่ม Input */
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Sarabun', sans-serif;
+    background-color: #fcfdfe;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+}
+
+/* ปุ่มคำนวณ */
+button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* พื้นที่แสดงผลลัพธ์ */
+.result-area {
+    margin-top: 2rem;
+    border-top: 2px solid #edf2f7;
+    padding-top: 1.5rem;
+    text-align: center;
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.result-area.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.result-area p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.result-area strong {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a202c;
 }
