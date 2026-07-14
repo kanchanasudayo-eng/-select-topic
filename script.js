@@ -1,49 +1,86 @@
-// ดึงข้อมูล Element ที่ต้องการใช้งาน
+// 1. ดึง Element สำหรับกรอกข้อมูลหลัก
 const totalBillInput = document.getElementById('totalBill');
 const numPeopleInput = document.getElementById('numPeople');
 const serviceChargeInput = document.getElementById('serviceCharge');
 const calculateBtn = document.getElementById('calculateBtn');
-const resultArea = document.getElementById('resultArea');
-const totalWithServiceSpan = document.getElementById('totalWithService');
-const perPersonSpan = document.getElementById('perPerson');
 
-// ฟังก์ชันสำหรับคำนวณ
-function calculateBillSplit() {
-    // 1. ดึงค่าจาก input และแปลงเป็นตัวเลข
+// ดึง Element สำหรับปุ่มเพิ่ม/ลดค่า (+ / -)
+const btnBillPlus = document.getElementById('btn-bill-plus');
+const btnBillMinus = document.getElementById('btn-bill-minus');
+const btnPeoplePlus = document.getElementById('btn-people-plus');
+const btnPeopleMinus = document.getElementById('btn-people-minus');
+const btnServicePlus = document.getElementById('btn-service-plus');
+const btnServiceMinus = document.getElementById('btn-service-minus');
+
+// ดึง Element สำหรับพื้นที่แสดงผล
+const resultArea = document.getElementById('resultArea');
+const totalWithServiceText = document.getElementById('totalWithServiceText');
+const perPersonText = document.getElementById('perPersonText');
+
+// 2. ฟังก์ชันเสริมสำหรับการบวกและลดตัวเลขในช่องกรอก (Step Helper)
+function changeInputValue(inputElement, step, isAddition, minValue = 0) {
+    let currentValue = Number(inputElement.value) || 0;
+    if (isAddition) {
+        currentValue += step;
+    } else {
+        currentValue -= step;
+        if (currentValue < minValue) {
+            currentValue = minValue; // จำกัดค่าขั้นต่ำเพื่อไม่ให้ผู้ใช้ได้ค่าติดลบ
+        }
+    }
+    inputElement.value = currentValue;
+    
+    // ซ่อนพื้นที่แสดงผลลัพธ์เก่า เพื่อให้คำนวณใหม่
+    resultArea.classList.add('hidden');
+}
+
+// 3. ผูกคำสั่งของปุ่มบวกและลบ (+ / -) ด้วย addEventListener (ตามข้อกำหนดกติกาของวิชา)
+btnBillPlus.addEventListener('click', () => changeInputValue(totalBillInput, 10, true));
+btnBillMinus.addEventListener('click', () => changeInputValue(totalBillInput, 10, false));
+
+btnPeoplePlus.addEventListener('click', () => changeInputValue(numPeopleInput, 1, true, 1));
+btnPeopleMinus.addEventListener('click', () => changeInputValue(numPeopleInput, 1, false, 1));
+
+btnServicePlus.addEventListener('click', () => changeInputValue(serviceChargeInput, 1, true));
+btnServiceMinus.addEventListener('click', () => changeInputValue(serviceChargeInput, 1, false));
+
+// 4. ฟังก์ชันหลักสำหรับการคำนวณบิล
+function calculateSplit() {
     const totalBill = Number(totalBillInput.value);
     const numPeople = Number(numPeopleInput.value);
-    const serviceCharge = Number(serviceChargeInput.value);
+    const serviceCharge = Number(serviceChargeInput.value) || 0;
 
-    // 2. ตรวจสอบข้อมูลนำเข้าเบื้องต้น
-    // จำนวนคนต้องไม่เป็น 0, ค่าบิลและจำนวนคนต้องเป็นค่าบวก, service charge ต้องไม่เกิน 100
-    if (isNaN(totalBill) || totalBill < 0 ||
-        isNaN(numPeople) || numPeople <= 0 ||
-        isNaN(serviceCharge) || serviceCharge < 0 || serviceCharge > 100) {
-        alert("กรุณากรอกข้อมูลให้ถูกต้อง:\n- ยอดรวมไม่สามารถเป็นค่าลบ\n- จำนวนคนต้องเป็นค่าบวกมากกว่า 0\n- Service Charge ต้องอยู่ระหว่าง 0 ถึง 100");
-        return; // ออกจากฟังก์ชันทันทีหากข้อมูลไม่ถูกต้อง
+    // ระบบตรวจสอบความถูกต้อง (Validation)
+    if (totalBill <= 0) {
+        alert('❌ กรุณากรอกยอดเงินรวมที่ถูกต้อง (มากกว่า 0 บาท)');
+        return;
+    }
+    if (numPeople <= 0) {
+        alert('❌ กรุณาระบุจำนวนคนตั้งแต่ 1 คนขึ้นไป');
+        return;
+    }
+    if (serviceCharge < 0 || serviceCharge > 100) {
+        alert('❌ เปอร์เซ็นต์ Service Charge จะต้องอยู่ระหว่าง 0 ถึง 100%');
+        return;
     }
 
-    // 3. เริ่มการคำนวณ
-    // คำนวณค่า Service Charge ที่เป็นบาท
-    const serviceChargeAmount = (totalBill * serviceCharge) / 100;
-    // คำนวณยอดรวมทั้งหมด (บิล + Service Charge)
-    const finalTotalBill = totalBill + serviceChargeAmount;
-    // คำนวณยอดที่แต่ละคนต้องจ่าย
-    const amountPerPerson = finalTotalBill / numPeople;
+    // ประมวลผลทางคณิตศาสตร์
+    const serviceAmount = (totalBill * serviceCharge) / 100;
+    const grandTotal = totalBill + serviceAmount;
+    const splitPerPerson = grandTotal / numPeople;
 
-    // 4. แสดงผลลัพธ์
-    // แปลงตัวเลขเป็นทศนิยม 2 ตำแหน่ง
-    totalWithServiceSpan.textContent = finalTotalBill.toFixed(2);
-    perPersonSpan.textContent = amountPerPerson.toFixed(2);
+    // บันทึกและแสดงผลโดยใช้ Template Literal (ตามข้อกำหนดกติกาข้อ 5 ของโปรเจกต์)
+    totalWithServiceText.textContent = `ยอดรวมทั้งหมด: ${grandTotal.toFixed(2)} บาท`;
+    perPersonText.textContent = `แต่ละคนจ่าย: ${splitPerPerson.toFixed(2)} บาท`;
 
-    // แสดงพื้นที่ผลลัพธ์
+    // เปิดแสดงผลลัพธ์
     resultArea.classList.remove('hidden');
 }
 
-// ผูกฟังก์ชันเข้ากับเหตุการณ์คลิกปุ่ม
-calculateBtn.addEventListener('click', calculateBillSplit);
+// ผูกฟังก์ชันเข้ากับปุ่มคำนวณหลักด้วย addEventListener
+calculateBtn.addEventListener('click', calculateSplit);
 
-// ตัวช่วยเสริม: ซ่อนผลลัพธ์ทันทีที่มีการเปลี่ยนแปลงข้อมูลในช่อง input
+// ซ่อนผลลัพธ์ทันทีที่มีการแก้ตัวเลขในช่อง input ใดๆ เพื่อความสวยงาม
 [totalBillInput, numPeopleInput, serviceChargeInput].forEach(input => {
     input.addEventListener('input', () => {
         resultArea.classList.add('hidden');

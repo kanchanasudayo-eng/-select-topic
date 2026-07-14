@@ -1,10 +1,14 @@
-/* กฏทั่วไป */
+/* การตั้งค่า Font และตัวแปรสีสำหรับตกแต่งสไตล์การ์ตูนพาสเทล */
 :root {
-    --primary-color: #3182ce; /* สีน้ำเงินหลัก */
-    --hover-color: #2b6cb0;   /* สีตอนชี้ปุ่ม */
-    --bg-color: #f7fafc;      /* สีพื้นหลังหน้าเว็บ */
-    --text-color: #2d3748;   /* สีตัวอักษรทั่วไป */
-    --card-bg: #ffffff;      /* สีพื้นหลังการ์ด */
+    --bg-rainbow: linear-gradient(180deg, #51e2f5 0%, #ffcfdf 100%);
+    --text-primary: #116979;
+    --font-main: 'Sarabun', sans-serif;
+    
+    /* สีกำหนดเฉพาะส่วนตามภาพ */
+    --color-green: #8dd335;
+    --color-orange: #fbb016;
+    --color-blue: #1670b8;
+    --color-cyan-gradient: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
 }
 
 * {
@@ -14,119 +18,228 @@
 }
 
 body {
-    font-family: 'Sarabun', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    font-family: var(--font-main);
+    background: #fdfdfd;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    padding: 20px;
 }
 
-/* การ์ดคำนวณหลัก */
+/* เส้นกรอบไล่สีรุ้งพาสเทลด้านนอกสุดตามภาพ */
+.outer-rainbow-border {
+    background: var(--bg-rainbow);
+    padding: 8px; /* ความหนาของเส้นขอบนอก */
+    border-radius: 36px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+}
+
+/* ตัวการ์ดหลักสีขาวด้านใน */
 .calculator-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    width: 90%;
-    max-width: 450px;
-    padding: 2rem;
+    background: #ffffff;
+    width: 100%;
+    border-radius: 30px;
+    padding: 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ของตกแต่งลอยรอบๆ ตามแบบ */
+.floating-deco {
+    position: absolute;
+    font-size: 1.4rem;
+    pointer-events: none;
+    z-index: 10;
+}
+.deco-lemon { top: 15px; left: 15px; opacity: 0.9; }
+.deco-coffee { top: 60px; right: 15px; transform: rotate(15deg); }
+.deco-pepper1 { bottom: 120px; left: -5px; transform: rotate(-20deg); font-size: 1.2rem; }
+.deco-pepper2 { bottom: 10px; right: 15px; transform: rotate(10deg); font-size: 1.2rem; }
+
+/* หัวข้อและภาพ */
+.header-section {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.food-avatar {
+    font-size: 2.5rem;
+    margin-bottom: 0.2rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.brand-title {
+    font-size: 2.1rem;
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+/* การจัดระเบียบฟอร์มและแถว */
+.form-section {
     display: flex;
     flex-direction: column;
+    gap: 1.1rem;
 }
 
-/* หัวข้อการ์ด */
-.card-header {
-    text-align: center;
-    margin-bottom: 2rem;
+.input-row-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.input-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* การจัดเรียงในหนึ่งบรรทัด */
+.control-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
-.header-icon {
-    font-size: 1.8rem;
+/* ตัวห่อหุ้มช่อง Input และ ไอคอน */
+.input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 0 12px;
+    height: 48px;
+    position: relative;
+    transition: all 0.2s ease;
 }
 
-.card-header h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-/* กลุ่ม Input */
-.input-group {
-    margin-bottom: 1.2rem;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.input-group input {
+.input-wrapper input {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: 'Sarabun', sans-serif;
-    background-color: #fcfdfe;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
-}
-
-/* ปุ่มคำนวณ */
-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--primary-color);
-    color: white;
     border: none;
-    border-radius: 8px;
+    background: transparent;
+    height: 100%;
     font-size: 1.1rem;
     font-weight: 600;
-    font-family: 'Sarabun', sans-serif;
-    cursor: pointer;
-    margin-top: 1rem;
+    font-family: var(--font-main);
+    color: #2d3748;
+    padding-left: 8px;
 }
 
-button:hover {
-    background-color: var(--hover-color);
+.input-wrapper input:focus {
+    outline: none;
 }
 
-button:active {
-    transform: translateY(1px);
-}
+/* สีกรอบและไอคอนแยกตามหมวดหมู่ */
+.border-green { border: 2.5px solid var(--color-green); }
+.border-orange { border: 2.5px solid var(--color-orange); }
+.border-blue { border: 2.5px solid var(--color-blue); }
 
-/* พื้นที่แสดงผลลัพธ์ */
-.result-area {
-    margin-top: 2rem;
-    border-top: 2px solid #edf2f7;
-    padding-top: 1.5rem;
+.input-icon {
+    font-size: 1.15rem;
+    width: 24px;
     text-align: center;
-    border-radius: 8px;
-    transition: opacity 0.3s ease;
+}
+.icon-green { color: var(--color-green); }
+.icon-orange { color: var(--color-orange); }
+.icon-blue { color: var(--color-blue); }
+
+/* สไตล์ปุ่มกดบวก-ลบ */
+.btn-step {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease, filter 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.result-area.hidden {
-    opacity: 0;
-    pointer-events: none;
+.btn-step:hover {
+    filter: brightness(1.08);
 }
 
-.result-area p {
-    font-size: 1.1rem;
+.btn-step:active {
+    transform: scale(0.93);
+}
+
+.bg-green { background-color: var(--color-green); }
+.bg-orange { background-color: var(--color-orange); }
+.bg-blue { background-color: var(--color-blue); }
+
+/* ปุ่มคำนวณโค้งมนขนาดใหญ่ */
+.btn-calculate {
+    width: 100%;
+    height: 52px;
+    background: var(--color-cyan-gradient);
+    color: #ffffff;
+    border: none;
+    border-radius: 26px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-family: var(--font-main);
+    cursor: pointer;
+    margin-top: 0.4rem;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 15px rgba(0, 180, 219, 0.25);
+}
+
+.btn-calculate:hover {
+    box-shadow: 0 8px 18px rgba(0, 180, 219, 0.35);
+}
+
+.btn-calculate:active {
+    transform: scale(0.98);
+}
+
+/* กล่องผลลัพธ์ล่างสุด */
+.result-display {
+    text-align: center;
+    margin-top: 0.5rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.result-display.hidden {
+    display: none;
+}
+
+.dashed-line {
+    border-top: 2px dashed #e2e8f0;
     margin-bottom: 1rem;
 }
 
-.result-area strong {
-    font-size: 1.4rem;
+.summary-text {
+    font-size: 1.15rem;
     font-weight: 700;
-    color: #1a202c;
+    color: #1a1a1a;
+    margin-bottom: 0.4rem;
+}
+
+.per-person-text {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.footer-note {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-top: 0.6rem;
+}
+
+/* แอนิเมชันตอนผลลัพธ์เด้งขึ้นมา */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }

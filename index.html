@@ -5,37 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>โปรแกรมคำนวณหารบิลค่าข้าว</title>
     <link rel="stylesheet" href="style.css">
+    <!-- นำเข้าฟอนต์และ FontAwesome สำหรับไอคอนในช่องกรอก -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="calculator-card">
-        <header class="card-header">
-            <span class="header-icon" aria-hidden="true">🍽️</span>
-            <h1>คำนวณหารบิลค่าข้าว</h1>
-        </header>
+    <div class="outer-rainbow-border">
+        <div class="calculator-card">
+            <!-- ของตกแต่งลอยรอบการ์ด (ส้ม มะนาว เมล็ดกาแฟ พริกหวาน) -->
+            <span class="floating-deco deco-lemon">🍋</span>
+            <span class="floating-deco deco-coffee">☕</span>
+            <span class="floating-deco deco-pepper1">🌶️</span>
+            <span class="floating-deco deco-pepper2">🫑</span>
 
-        <main class="card-body">
-            <div class="input-group">
-                <label for="totalBill">ยอดรวม (บาท)</label>
-                <input type="number" id="totalBill" placeholder="0.00" min="0" step="0.01" required>
-            </div>
+            <header class="header-section">
+                <div class="food-avatar">🍔🥤🍚</div>
+                <h1 class="brand-title">หารบิลค่าข้าว</h1>
+            </header>
 
-            <div class="input-group">
-                <label for="numPeople">จำนวนคน</label>
-                <input type="number" id="numPeople" placeholder="0" min="1" step="1" required>
-            </div>
+            <main class="form-section">
+                <!-- แถวที่ 1: ยอดรวม (ธีมสีเขียวสดใส) -->
+                <div class="input-row-container">
+                    <label class="input-label">ยอดรวม (บาท)</label>
+                    <div class="control-row">
+                        <div class="input-wrapper border-green">
+                            <i class="fa-solid fa-calculator input-icon icon-green"></i>
+                            <input type="number" id="totalBill" placeholder="กรอกจำนวนเงิน" min="0" step="0.01">
+                        </div>
+                        <button type="button" class="btn-step bg-green" id="btn-bill-plus">+</button>
+                        <button type="button" class="btn-step bg-green" id="btn-bill-minus">-</button>
+                    </div>
+                </div>
 
-            <div class="input-group">
-                <label for="serviceCharge">Service Charge (%)</label>
-                <input type="number" id="serviceCharge" placeholder="0" min="0" max="100" step="1">
-            </div>
+                <!-- แถวที่ 2: จำนวนคน (ธีมสีส้มเหลือง) -->
+                <div class="input-row-container">
+                    <label class="input-label">จำนวนคน</label>
+                    <div class="control-row">
+                        <div class="input-wrapper border-orange">
+                            <i class="fa-solid fa-user input-icon icon-orange"></i>
+                            <input type="number" id="numPeople" placeholder="หารกันกี่คนเอ่ย" min="1" step="1">
+                        </div>
+                        <button type="button" class="btn-step bg-orange" id="btn-people-plus">+</button>
+                        <button type="button" class="btn-step bg-orange" id="btn-people-minus">-</button>
+                    </div>
+                </div>
 
-            <button id="calculateBtn">คำนวณ</button>
+                <!-- แถวที่ 3: Service Charge (ธีมสีน้ำเงิน) -->
+                <div class="input-row-container">
+                    <label class="input-label">Service Charge (%)</label>
+                    <div class="control-row">
+                        <div class="input-wrapper border-blue">
+                            <i class="fa-solid fa-gear input-icon icon-blue"></i>
+                            <input type="number" id="serviceCharge" placeholder="ถ้าไม่มีให้เว้นว่างหรือใส่ 0" min="0" max="100" step="1">
+                        </div>
+                        <button type="button" class="btn-step bg-blue" id="btn-service-plus">+</button>
+                        <button type="button" class="btn-step bg-blue" id="btn-service-minus">-</button>
+                    </div>
+                </div>
 
-            <div id="resultArea" class="result-area hidden">
-                <p>ยอดรวมทั้งหมด: <strong id="totalWithService">0.00</strong> บาท</p>
-                <p>แต่ละคนจ่าย: <strong id="perPerson">0.00</strong> บาท</p>
-            </div>
-        </main>
+                <!-- ปุ่มคำนวณขอบมนขนาดใหญ่ สีฟ้าพาสเทลไล่เฉด -->
+                <button type="button" id="calculateBtn" class="btn-calculate">คำนวณ</button>
+
+                <!-- ผลลัพธ์แสดงผลดีไซน์แบบในรูปเป๊ะ ๆ -->
+                <div id="resultArea" class="result-display hidden">
+                    <div class="dashed-line"></div>
+                    <p class="summary-text" id="totalWithServiceText">ยอดรวมทั้งหมด: 0.00 บาท</p>
+                    <p class="per-person-text" id="perPersonText">แต่ละคนจ่าย: 0.00 บาท</p>
+                    <p class="footer-note">หารกันอย่างมีความสุข! 🍽️😊</p>
+                </div>
+            </main>
+        </div>
     </div>
 
     <script src="script.js"></script>
