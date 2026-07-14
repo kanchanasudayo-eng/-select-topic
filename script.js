@@ -4,7 +4,7 @@ const numPeopleInput = document.getElementById('numPeople');
 const serviceChargeInput = document.getElementById('serviceCharge');
 const calculateBtn = document.getElementById('calculateBtn');
 
-// ดึง Element สำหรับปุ่มเพิ่ม/ลดค่า (+ / -)
+// ดึง Element ปุ่มบวกและลบ (+ / -)
 const btnBillPlus = document.getElementById('btn-bill-plus');
 const btnBillMinus = document.getElementById('btn-bill-minus');
 const btnPeoplePlus = document.getElementById('btn-people-plus');
@@ -12,12 +12,12 @@ const btnPeopleMinus = document.getElementById('btn-people-minus');
 const btnServicePlus = document.getElementById('btn-service-plus');
 const btnServiceMinus = document.getElementById('btn-service-minus');
 
-// ดึง Element สำหรับพื้นที่แสดงผล
+// ดึง Element สำหรับแสดงผลลัพธ์ลงจอ
 const resultArea = document.getElementById('resultArea');
 const totalWithServiceText = document.getElementById('totalWithServiceText');
 const perPersonText = document.getElementById('perPersonText');
 
-// 2. ฟังก์ชันเสริมสำหรับการบวกและลดตัวเลขในช่องกรอก (Step Helper)
+// 2. ฟังก์ชันช่วยปรับค่าตัวเลขเมื่อกดปุ่มบวกลบ (Step Helper)
 function changeInputValue(inputElement, step, isAddition, minValue = 0) {
     let currentValue = Number(inputElement.value) || 0;
     if (isAddition) {
@@ -25,18 +25,18 @@ function changeInputValue(inputElement, step, isAddition, minValue = 0) {
     } else {
         currentValue -= step;
         if (currentValue < minValue) {
-            currentValue = minValue; // จำกัดค่าขั้นต่ำเพื่อไม่ให้ผู้ใช้ได้ค่าติดลบ
+            currentValue = minValue; // ควบคุมค่าต่ำสุดเพื่อไม่ให้บิลติดลบ
         }
     }
     inputElement.value = currentValue;
     
-    // ซ่อนพื้นที่แสดงผลลัพธ์เก่า เพื่อให้คำนวณใหม่
+    // ซ่อนพื้นที่แสดงผลเก่า เพื่อบังคับให้ผู้ใช้กดปุ่มคำนวณใหม่
     resultArea.classList.add('hidden');
 }
 
-// 3. ผูกคำสั่งของปุ่มบวกและลบ (+ / -) ด้วย addEventListener (ตามข้อกำหนดกติกาของวิชา)
-btnBillPlus.addEventListener('click', () => changeInputValue(totalBillInput, 10, true));
-btnBillMinus.addEventListener('click', () => changeInputValue(totalBillInput, 10, false));
+// 3. ผูกคำสั่งปุ่มบวกลบด้วย addEventListener (ห้ามเขียน onclick ใน HTML)
+btnBillPlus.addEventListener('click', () => changeInputValue(totalBillInput, 50, true));
+btnBillMinus.addEventListener('click', () => changeInputValue(totalBillInput, 50, false));
 
 btnPeoplePlus.addEventListener('click', () => changeInputValue(numPeopleInput, 1, true, 1));
 btnPeopleMinus.addEventListener('click', () => changeInputValue(numPeopleInput, 1, false, 1));
@@ -44,43 +44,43 @@ btnPeopleMinus.addEventListener('click', () => changeInputValue(numPeopleInput, 
 btnServicePlus.addEventListener('click', () => changeInputValue(serviceChargeInput, 1, true));
 btnServiceMinus.addEventListener('click', () => changeInputValue(serviceChargeInput, 1, false));
 
-// 4. ฟังก์ชันหลักสำหรับการคำนวณบิล
+// 4. ฟังก์ชันหลักสำหรับคำนวณบิลค่าข้าว
 function calculateSplit() {
     const totalBill = Number(totalBillInput.value);
     const numPeople = Number(numPeopleInput.value);
     const serviceCharge = Number(serviceChargeInput.value) || 0;
 
-    // ระบบตรวจสอบความถูกต้อง (Validation)
+    // การตรวจสอบเงื่อนไขความถูกต้อง (Data Validation) เพื่อคะแนนสอบปากเปล่า
     if (totalBill <= 0) {
-        alert('❌ กรุณากรอกยอดเงินรวมที่ถูกต้อง (มากกว่า 0 บาท)');
+        alert('❌ รบกวนกรอกยอดเงินค่าข้าวให้ถูกต้องน้า (ต้องมากกว่า 0 บาท)');
         return;
     }
     if (numPeople <= 0) {
-        alert('❌ กรุณาระบุจำนวนคนตั้งแต่ 1 คนขึ้นไป');
+        alert('❌ รบกวนระบุจำนวนคนอย่างน้อย 1 คนขึ้นไปจ้า');
         return;
     }
     if (serviceCharge < 0 || serviceCharge > 100) {
-        alert('❌ เปอร์เซ็นต์ Service Charge จะต้องอยู่ระหว่าง 0 ถึง 100%');
+        alert('❌ เปอร์เซ็นต์ Service Charge ต้องอยู่ระหว่าง 0 ถึง 100% เท่านั้นครับ');
         return;
     }
 
-    // ประมวลผลทางคณิตศาสตร์
+    // คำนวณตามสูตรคณิตศาสตร์
     const serviceAmount = (totalBill * serviceCharge) / 100;
     const grandTotal = totalBill + serviceAmount;
     const splitPerPerson = grandTotal / numPeople;
 
-    // บันทึกและแสดงผลโดยใช้ Template Literal (ตามข้อกำหนดกติกาข้อ 5 ของโปรเจกต์)
-    totalWithServiceText.textContent = `ยอดรวมทั้งหมด: ${grandTotal.toFixed(2)} บาท`;
-    perPersonText.textContent = `แต่ละคนจ่าย: ${splitPerPerson.toFixed(2)} บาท`;
+    // นำผลลัพธ์ที่คำนวณได้ไปจัดรูปแบบและแสดงผลโดยใช้ Template Literal (ตามข้อกำหนดกติกาข้อ 5)
+    totalWithServiceText.textContent = `ยอดรวมสุทธิ: ${grandTotal.toFixed(2)} บาท`;
+    perPersonText.textContent = `จ่ายคนละ: ${splitPerPerson.toFixed(2)} บาท`;
 
-    // เปิดแสดงผลลัพธ์
+    // เปิดการแสดงผลลัพธ์
     resultArea.classList.remove('hidden');
 }
 
 // ผูกฟังก์ชันเข้ากับปุ่มคำนวณหลักด้วย addEventListener
 calculateBtn.addEventListener('click', calculateSplit);
 
-// ซ่อนผลลัพธ์ทันทีที่มีการแก้ตัวเลขในช่อง input ใดๆ เพื่อความสวยงาม
+// ตัวช่วยเสริม: ซ่อนหน้าต่างผลลัพธ์ทันทีเมื่อผู้ใช้เปลี่ยนข้อมูลในอินพุตด้วยคีย์บอร์ด
 [totalBillInput, numPeopleInput, serviceChargeInput].forEach(input => {
     input.addEventListener('input', () => {
         resultArea.classList.add('hidden');
