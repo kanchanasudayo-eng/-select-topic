@@ -86,3 +86,19 @@ calculateBtn.addEventListener('click', calculateSplit);
         resultArea.classList.add('hidden');
     });
 });
+
+// 5. กันไม่ให้ช่อง "จำนวนเพื่อนคนหาร" ใส่จุดทศนิยมได้ (ช่องอื่นยังใส่จุดได้ตามปกติ)
+numPeopleInput.addEventListener('input', () => {
+    // ตัดอักขระที่ไม่ใช่ตัวเลข 0-9 ออกทั้งหมด (รวมถึงจุด, เครื่องหมายลบ, ตัว e)
+    const digitsOnly = numPeopleInput.value.replace(/[^0-9]/g, '');
+    if (numPeopleInput.value !== digitsOnly) {
+        numPeopleInput.value = digitsOnly;
+    }
+});
+
+// กันกรณีพิมพ์จุดโดยตรงจากคีย์บอร์ดในช่องนี้ (สำรองอีกชั้นนอกเหนือจากด้านบน)
+numPeopleInput.addEventListener('keydown', (event) => {
+    if (event.key === '.' || event.key === ',') {
+        event.preventDefault();
+    }
+});
