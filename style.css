@@ -25,6 +25,7 @@ body {
     background: #fcf8f2;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
@@ -245,6 +246,15 @@ body {
     font-size: 0.85rem;
     color: #94a3b8;
     margin-top: 0.5rem;
+}
+
+/* ข้อความเครดิตผู้จัดทำ ใต้การ์ดคำนวณ */
+.credit-note {
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-align: center;
 }
 
 /* แอนิเมชันน่ารักขยับดุ๊กดิ๊ก */
